@@ -1,0 +1,15 @@
+﻿@inject IJSRuntime Js
+
+<div style="width:50%; height: 200px;" id="allmap"></div>
+
+@code {
+
+    [Parameter]
+    public string Address { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Js.InvokeVoidAsync("map", "allmap", Address);
+
+    }
+}

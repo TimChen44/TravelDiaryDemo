@@ -9,17 +9,18 @@
         <Input @bind-Value="@context.Title" />
     </FormItem>
     <FormItem Label="日期">
-        <DatePicker @bind-Value="@context.Data" DefaultValue="@DateTime.Now" />
+        <DatePicker @bind-Value="@context.Data" />
     </FormItem>
     <FormItem Label="地址">
         <Input @bind-Value="@context.Address" />
     </FormItem>
-    <div>
-        <Button OnClick="OnMap">定位</Button>
-        <div style="width:50%; height: 200px;" id="allmap"></div>
-    </div>
+    <Map Address="@context.Address"></Map>
+    @*<div>
+            <Button OnClick="OnMap">定位</Button>
+            <div style="width:50%; height: 200px;" id="allmap"></div>
+        </div>*@
     <FormItem Label="内容">
-        <Input @bind-Value="@context.Content" />
+        <TextArea @bind-Value="@context.Content" />
     </FormItem>
     <div>
         <Text>密钥</Text>
@@ -27,8 +28,6 @@
         <Button OnClick="OnEncrypt">加密</Button>
         <Button OnClick="OnDecrypt">解密</Button>
     </div>
-
-
 
     <Button HtmlType="submit">提交</Button>
 </Form>
@@ -61,8 +60,10 @@
         model.Content = Algorithm.Encryption.AesDecrypt(model.Content, key);
     }
 
+    private string mapAddress;
+
     public void OnMap()
     {
-        Js.InvokeVoidAsync("map", model.Address);
+        Js.InvokeVoidAsync("map", "allmap", model.Address);
     }
 }

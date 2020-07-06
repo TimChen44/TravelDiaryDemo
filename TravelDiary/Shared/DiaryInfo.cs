@@ -10,8 +10,9 @@ namespace TravelDiary.Shared
     public class DiaryInfo
     {
         [DisplayName("标题")]
-        [Required]
-        [MaxLength(20)]
+        [Required(ErrorMessage ="标题必须填写")]
+        [MaxLength(20, ErrorMessage = "标题长度不能超过20个字符")]
+        [MinLength(5, ErrorMessage = "标题长度不能短于5个字符")]
         public string Title { get; set; }
 
         [DisplayName("日期")]

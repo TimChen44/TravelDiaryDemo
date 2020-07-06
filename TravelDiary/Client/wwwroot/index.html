@@ -26,9 +26,9 @@
 
 <script type="text/javascript">
 
-    window.map = function (address) {
+    window.map = function (id, address) {
         // 百度地图API功能
-        var map = new BMap.Map("allmap");
+        var map = new BMap.Map(id);
         var local = new BMap.LocalSearch(map, {
             renderOptions: { map: map }
         });

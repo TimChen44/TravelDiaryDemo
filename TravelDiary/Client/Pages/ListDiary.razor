@@ -1,12 +1,12 @@
 ﻿@page "/ListDiary"
 
 <div>
-    <input @oninput="e=>OnQuery(e.Value.ToString())" />
+    <Input OnInput="e=>OnQuery(e.Value.ToString())" TValue="string" />
 </div>
 
 <Table DataSource="@queryDatas">
     <Column @bind-Field="@context.Title"></Column>
-    <Column @bind-Field="@context.Data"></Column>
+    <Column @bind-Field="@context.Data" Format="yyyy年MM月dd日"></Column>
     <Column @bind-Field="@context.Address"></Column>
     <Column @bind-Field="@context.Content"></Column>
 </Table>
