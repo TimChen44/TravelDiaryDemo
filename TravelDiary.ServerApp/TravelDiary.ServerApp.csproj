@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AntDesign" Version="0.2.0-nightly-200710175133" />
+    <PackageReference Include="AntDesign" Version="0.2.0-nightly-200711150735" />
   </ItemGroup>
 
   <ItemGroup>
