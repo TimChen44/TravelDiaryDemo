@@ -1,0 +1,48 @@
+﻿@page "/ListDiary"
+@using TravelDiary.Shared
+@using System.IO 
+
+<div>
+    <Input OnInput="e=>OnQuery(e.Value.ToString())" TValue="string" />
+</div>
+
+<Table DataSource="@queryDatas">
+    <Column @bind-Field="@context.Title"></Column>
+    <Column @bind-Field="@context.Data" Format="yyyy年MM月dd日"></Column>
+    <Column @bind-Field="@context.Address"></Column>
+    <Column @bind-Field="@context.Content"></Column>
+</Table>
+
+@code{
+
+    public string queryText = "";
+
+    public List<DiaryInfo> queryDatas = new List<DiaryInfo>();
+
+
+    public ListDiary()
+    {
+        OnQuery("");
+    }
+
+
+    public void OnQuery(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            queryDatas = GetAll();
+        else
+            queryDatas = GetAll().Where(x => x.Title.Contains(value) || x.Address.Contains(value)).ToList();
+    }
+
+    public List<DiaryInfo> GetAll()
+    {
+        var diaries = new List<DiaryInfo>();
+        foreach (var item in Directory.GetFiles($"AppData\\", "*.json"))
+        {
+            diaries.Add(System.Text.Json.JsonSerializer.Deserialize<DiaryInfo>(System.IO.File.ReadAllText(item)));
+
+        }
+        return diaries;
+    }
+
+}

@@ -1,0 +1,65 @@
+﻿@page "/AddDiary"
+@inject MessageService Msg
+@inject IJSRuntime Js
+@using TravelDiary.Shared
+
+<Form Model="@model" OnFinish="OnFinish">
+    <FormItem Label="标题">
+        <Input @bind-Value="@context.Title" />
+    </FormItem>
+    <FormItem Label="日期">
+        <DatePicker @bind-Value="@context.Data" />
+    </FormItem>
+    <FormItem Label="地址">
+        <Input @bind-Value="@context.Address" />
+    </FormItem>
+    <Map Address="@context.Address"></Map>
+    @*<div>
+            <Button OnClick="OnMap">定位</Button>
+            <div style="width:50%; height: 200px;" id="allmap"></div>
+        </div>*@
+    <FormItem Label="内容">
+        <TextArea @bind-Value="@context.Content" />
+    </FormItem>
+    <div>
+        <Text>密钥</Text>
+        <Input Style="width:200px" @bind-Value="key" />
+        <Button OnClick="OnEncrypt">加密</Button>
+        <Button OnClick="OnDecrypt">解密</Button>
+    </div>
+
+    <Button HtmlType="submit">提交</Button>
+</Form>
+
+
+@code {
+
+    DiaryInfo model = new DiaryInfo();
+
+    public async void OnFinish()
+    {
+        System.IO.File.WriteAllText($"AppData\\{Guid.NewGuid()}.json", System.Text.Json.JsonSerializer.Serialize(model));
+        Msg.Success("添加成功");
+        model = new DiaryInfo();
+    }
+
+    public string key;
+
+    public void OnEncrypt()
+    {
+        model.Content = Algorithm.Encryption.AesEncrypt(model.Content, key);
+    }
+
+
+    public void OnDecrypt()
+    {
+        model.Content = Algorithm.Encryption.AesDecrypt(model.Content, key);
+    }
+
+    private string mapAddress;
+
+    public void OnMap()
+    {
+        Js.InvokeVoidAsync("map", "allmap", model.Address);
+    }
+}
